@@ -30,7 +30,7 @@ Implemented volumes for data persistence
 Latest working images tagged with :latest tag for easy identification as per semver conventions.
 
 ## SETUP INSTRUCTIONS
-* git clone https://github.com/Dgichaba/yolo.git
+* git clone (https://github.com/Naniyule/yolo/)
 * cd yolo
 * sudo docker-compose up
 * Access App on http://localhost:3000
