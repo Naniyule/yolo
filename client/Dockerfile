@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:19.0.0-alpine3.16
 RUN mkdir client
 
 WORKDIR /client
@@ -9,7 +9,7 @@ COPY . /client/
 
 RUN chmod +x /client/
 
-RUN npm install
+RUN npm install --production
 
 
 CMD [ "npm", "start" ]
