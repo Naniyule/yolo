@@ -1,34 +1,51 @@
-version: '3.7'
-services: 
-    client: 
-        container_name: client
-        build: ./client/
-        image: client:latest
-        ports: 
-          - 8080:80
-        depends_on:
-          - backend
+version: "3.7"
 
-    backend:
-        container_name: backend
-        build: ./backend/
-        image: backend:latest
-        ports:
-          - 5000:80
-        volumes: 
-          - ./backend/logs:/var/log/supervisor
-        depends_on:
-          - mongodb
+services:
+  backend: 
+    container_name: backend
+    build:
+      context: ./backend/
+      dockerfile: Dockerfile
+    image: yolo_backend:latest
+    ports:
+      - 5000:5000
+    depends_on: 
+      - db
+    networks:
+      - yolo
 
-    mongodb:
-        image: mongo:latest
-        environment:
-          MONGO_INITDB_ROOT_USERNAME: root
-          MONGO_INITDB_ROOT_PASSWORD: rootpassword
-        ports:
-          - 27017:27017
-        volumes:
-          - ./mongodb_data:/data/db
+  client:
+    container_name: client
+    build:
+      context: ./client/
+      dockerfile: Dockerfile
+    image: yolo_client:latest
+    ports:
+      - 3000:3000
+    stdin_open: true
+    depends_on:
+      - backend
+    networks:
+      - yolo
 
-volumes: 
-    mongodb_data: 
+  db:
+    container_name: database
+    image: mongo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    networks: 
+      - yolo
+    ports:
+      - 27018:27018
+    volumes:
+      - ./mongodb_vol:/data/db
+
+
+
+networks:
+  yolo:
+
+volumes:
+  mongodb_vol:
